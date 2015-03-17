@@ -12,7 +12,8 @@ def reading_To_Degrees_C(reading):
 	voltage_average = sum(readings)/float(len(readings))
 
 	# Converting Voltage to Temperature C. 
-	# (( VOLTAGE * 3.2258 ) - 500 ) / 10.0
+	# FORMULA FROM DIGI.COM/SUPPORT/KBASE
+	# (((Voltage_Out / 1023) * 1200) - 500) / 10
 	# This only works if the sensor is connected to 3.3V out
 
 	temperature_C = (((voltage_average/1023) * 1200 ) - 500) / 10
