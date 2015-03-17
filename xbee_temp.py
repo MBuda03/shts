@@ -1,6 +1,7 @@
 import serial, time, datetime, sys
 from xbee import ZigBee
 
+
 # WINDOWS => e.g COM3
 # MAC => e.g /dev/tty.usbserial-A702NXQX
 SERIAL_PORT = "/dev/tty.usbserial-A702NXQX"
@@ -18,7 +19,7 @@ while True:
 		print response
 
 		# Turn response into human readible
-
+		
 		# Add time stamps
 
 		# Add the values into sqlite/csv as
@@ -28,3 +29,11 @@ while True:
 		break
 
 ser.close()
+
+# Convert the value to Degrees 
+def reading_To_Degrees_C(reading):
+	print "converting data into Degrees C"
+	
+# Save Data
+def save_Data():
+	print "saving data into sql database"
