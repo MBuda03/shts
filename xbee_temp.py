@@ -16,6 +16,14 @@ while True:
 	try:
 		response = xbee.wait_read_frame()
 		print response
+
+		# Turn response into human readible
+
+		# Add time stamps
+
+		# Add the values into sqlite/csv as
+		# Device ID, Time, Degree in C
+
 	except KeyboardInterrupt:
 		break
 
