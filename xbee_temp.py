@@ -21,12 +21,15 @@ def reading_To_Degrees_C(reading):
 	return temperature_C
 	
 # Save Data
-def save_Data():
-	print "saving data into sql database"
+def save_Data(device_id, temp):
+	cursor.execute("INSERT INTO temp_data values( (?), (?), (?) )", (int(time.time()), device_id,temp))
+	connection.commit()
+
 
 # WINDOWS => e.g COM3
 # MAC => e.g /dev/tty.usbserial-A702NXQX
-SERIAL_PORT = "/dev/tty.usbserial-A702NXQX"
+# Linux => e.g /dev/ttyUSB0
+SERIAL_PORT = "/dev/ttyUSB0"
 BAUD_RATE = 9600
 
 serial_Info = serial.Serial(SERIAL_PORT, BAUD_RATE)
@@ -35,6 +38,10 @@ xbee = ZigBee(serial_Info)
 # Database
 connection = sqlite3.connect('temperature.db')
 cursor = connection.cursor()
+
+# Database creation (Only required for init)
+#cursor.execute("CREATE TABLE temp_data(Time varchar(255), RoomID varchar(255), temp varchar(255))")
+#connection.commit()
 
 while True:
 	try:
@@ -47,6 +54,8 @@ while True:
 		# Print the temp with timestamp
 		print  "Time: {0}, Temperature: {1}".format(int(time.time()), temp_C)
 
+		# Save the temp data to the database
+		save_Data("Device 1", temp_C)
 	except KeyboardInterrupt:
 		break
 
