@@ -57,6 +57,7 @@ while True:
 		# Save the temp data to the database
 		save_Data("Device 1", temp_C)
 	except KeyboardInterrupt:
+		connection.close()
 		break
 
 serial_Info.close()
