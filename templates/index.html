@@ -84,13 +84,14 @@
         element: document.querySelector("#chart"),
         width: 540,
         height: 240,
-        min: 74,
-        max: 82,
+        min: 5,
+        max: 35,
         dataURL: '/get_temps',
         onData: function(data) {
             return [{
                 name : "Tempature",
                 color: "steelblue",
+                //data : [data[0].strokeVolume_count],
                 data: data
             }];
             // or simply return [data[0].strokeVolume_count]; since it looks like a series object already

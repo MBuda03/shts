@@ -29,7 +29,7 @@ def save_Data(device_id, temp):
 # WINDOWS => e.g COM3
 # MAC => e.g /dev/tty.usbserial-A702NXQX
 # Linux => e.g /dev/ttyUSB0
-SERIAL_PORT = "/dev/ttyUSB0"
+SERIAL_PORT = "/dev/tty.usbserial-A702NXQX"
 BAUD_RATE = 9600
 
 serial_Info = serial.Serial(SERIAL_PORT, BAUD_RATE)
