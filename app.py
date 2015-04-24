@@ -31,7 +31,7 @@ def get_current_temp():
 
     for row in rows:
         timestamp = float(row[0]) - float((60*60*6))
-        temp = row[2]
+        temp = float(row[2])
 
     return temp
 
@@ -62,8 +62,8 @@ def get_temp_json():
     rows = cur.fetchall()
 
     for row in rows:
-    	timestamp = row[0] - (60*60*6)
-    	temp = row[2]
+    	timestamp = float(row[0]) - float((60*60*6))
+    	temp = float(row[2])
     	return_array.append({'x': timestamp, 'y': temp})
 
     response = Response(json.dumps(return_array))
