@@ -11,7 +11,7 @@ app.config.update(
     PROPAGATE_EXCEPTIONS=True
 )
 
-DATABASE = 'tempature.db'
+DATABASE = 'temperature.db'
 
 
 def get_db():
@@ -30,7 +30,7 @@ def get_current_temp():
     rows = cur.fetchall()
 
     for row in rows:
-        timestamp = row[0] - (60*60*6)
+        timestamp = float(row[0]) - float((60*60*6))
         temp = row[2]
 
     return temp
