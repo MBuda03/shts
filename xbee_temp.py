@@ -1,6 +1,7 @@
 import serial, time, datetime, sys, sqlite3
 from xbee import ZigBee
 
+
 # Convert the value to Degrees 
 def reading_To_Degrees_C(reading):
 	
@@ -50,6 +51,8 @@ while True:
 
 		# Turn response into human readible
 		temp_C = reading_To_Degrees_C(response['samples'])
+
+	
 
 		# Print the temp with timestamp
 		print  "Time: {0}, Temperature: {1}".format(int(time.time()), temp_C)
