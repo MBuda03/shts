@@ -8,7 +8,7 @@
     <meta name="author" content="">
     <link rel="shortcut icon" href="../../assets/ico/favicon.ico">
 
-    <title>Narrow Jumbotron Template for Bootstrap</title>
+    <title>Smart Home Temperature System</title>
 
     <!-- Bootstrap core CSS -->
     <link href="static/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -23,15 +23,6 @@
     <script type="text/javascript" src="static/bower_components/rickshaw/vendor/d3.layout.min.js"></script>
 
     <script type="text/javascript" src="static/bower_components/rickshaw/rickshaw.min.js"></script>
-
-    <!-- Just for debugging purposes. Don't actually copy this line! -->
-    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
 
 <style>
     #chart_container {
@@ -60,15 +51,24 @@
         <ul class="nav nav-pills pull-right">
           <li class="active"><a href="#">Home</a></li>
         </ul>
-        <h3 class="text-muted">Temperature Sensor Project</h3>
+        <h3 class="text-muted">Smart Home Temperature Monitoring System</h3>
       </div>
 
       <div class="jumbotron">
      
-        <h4>Current temp is <span id="temp"></span>{{ current_temp|round(2) }}</h4>
+        <h4>Device 1 latest temperature is: <span id="temp"></span>{{ current_temp|round(2) }}</h4>
             <div id="chart_container">
                 <div id="y_axis"></div>
                 <div id="chart"></div>
+            </div>
+      </div>
+
+       <div class="jumbotron">
+     
+        <h4>Device 2 latest temperature is: <span id="temp"></span>{{ current_temp|round(2) }}</h4>
+            <div id="chart2_container">
+                <div id="y_axis"></div>
+                <div id="chart2"></div>
             </div>
       </div>
 
@@ -79,14 +79,66 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
 
+
 <script>
     var graph = new Rickshaw.Graph.Ajax( {
         element: document.querySelector("#chart"),
+        // Graphs width and height configuration.
         width: 540,
         height: 240,
-        min: 5,
-        max: 35,
-        dataURL: '/get_temps',
+
+        // Minimum and maximum values for Y axis
+        min: 5, // Minimum temperature
+        max: 35, // Maximum temperature
+        dataURL: '/render_graph_device_1',
+        onData: function(data) {
+            return [{
+                name : "Tempature",
+                color: "steelblue",
+                //data : [data[0].strokeVolume_count],
+                data: data
+            }];
+            // or simply return [data[0].strokeVolume_count]; since it looks like a series object already
+        },
+
+        onComplete: function() {
+
+            var x_axis = new Rickshaw.Graph.Axis.Time({
+              graph: this.graph
+            });
+            x_axis.graph.update();
+
+            var hoverDetail = new Rickshaw.Graph.HoverDetail( {
+                graph: this.graph
+            } );
+
+            var y_ticks = new Rickshaw.Graph.Axis.Y( {
+                graph: this.graph,
+                orientation: 'left',
+                tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
+                element: document.getElementById('y_axis')
+            } );
+
+
+            this.graph.render();
+        }
+    } );
+
+
+</script>
+
+
+<script>
+    var graph = new Rickshaw.Graph.Ajax( {
+        element: document.querySelector("#chart2"),
+        // Graphs width and height configuration.
+        width: 540,
+        height: 240,
+
+        // Minimum and maximum values for Y axis
+        min: 5, // Minimum temperature
+        max: 35, // Maximum temperature
+        dataURL: '/render_graph_device_2',
         onData: function(data) {
             return [{
                 name : "Tempature",

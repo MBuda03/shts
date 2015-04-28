@@ -20,8 +20,21 @@ def reading_To_Degrees_C(reading):
 	temperature_C = (((voltage_average/1023) * 1200 ) - 500) / 10
 
 	return temperature_C
+
+# Function to get the device id as well
+# When the home network consists of multiple devices
+# BITIR BUNU
+def get_device_id(reading):
+	readings = []
+	for item in reading:
+		readings.append(item.get(''))
+
+	device_id = readings[0]
+
+	return device_id
 	
-# Save Data
+# Save data into the database
+# Data format is: Timestamp , Device Id (Configured below), Themperature in C
 def save_Data(device_id, temp):
 	cursor.execute("INSERT INTO temp_data values( (?), (?), (?) )", (int(time.time()), device_id,temp))
 	connection.commit()
@@ -33,6 +46,7 @@ def save_Data(device_id, temp):
 SERIAL_PORT = "/dev/tty.usbserial-A702NXQX"
 BAUD_RATE = 9600
 
+# Configuring the serial
 serial_Info = serial.Serial(SERIAL_PORT, BAUD_RATE)
 xbee = ZigBee(serial_Info)
 
@@ -41,18 +55,18 @@ connection = sqlite3.connect('temperature.db')
 cursor = connection.cursor()
 
 # Database creation (Only required for init)
+# Do not run it if the database is already created!!!
 #cursor.execute("CREATE TABLE temp_data(Time varchar(255), RoomID varchar(255), temp varchar(255))")
 #connection.commit()
 
 while True:
 	try:
+		# Get the response from xbee.
 		response = xbee.wait_read_frame()
 		#print response
 
 		# Turn response into human readible
 		temp_C = reading_To_Degrees_C(response['samples'])
-
-	
 
 		# Print the temp with timestamp
 		print  "Time: {0}, Temperature: {1}".format(int(time.time()), temp_C)
